@@ -6,6 +6,10 @@
   "files": [
     "lib"
   ],
+  "engines": { 
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "start": "node lib/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon --inspect lib/index.js",
