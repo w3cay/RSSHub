@@ -10,12 +10,6 @@ pageClass: routes
 
 <RouteEn author="nczitzk" example="/acm/amturingaward" path="/acm/amturingaward"/>
 
-## ACM-ECNU
-
-### ECNU ACM Online-Judge contests list
-
-<RouteEn author="a180285" example="/acm-ecnu/contest/public" path="/acm-ecnu/contest/:category?" radar="1" rssbud="1" :paramsDesc="['category is optional, default is all, use `public` for public only contests']" />
-
 ## AtCoder
 
 ### Present Contests
@@ -70,17 +64,29 @@ Category
 
 ### Commits
 
-<RouteEn author="AuroraDysis" example="/bitbucket/commits/blaze-lib/blaze" path="/bitbucket/commits/:workspace/:repo_slug" :paramsDesc="['Workspace', 'Repository']" rssbud="1" rssbud="1"/>
+<RouteEn author="AuroraDysis" example="/bitbucket/commits/blaze-lib/blaze" path="/bitbucket/commits/:workspace/:repo_slug" :paramsDesc="['Workspace', 'Repository']" radar="1" rssbud="1" />
 
 ### Tags
 
-<RouteEn author="AuroraDysis" example="/bitbucket/tags/blaze-lib/blaze" path="/bitbucket/tags/:workspace/:repo_slug" :paramsDesc="['Workspace', 'Repository']" rssbud="1" rssbud="1"/>
+<RouteEn author="AuroraDysis" example="/bitbucket/tags/blaze-lib/blaze" path="/bitbucket/tags/:workspace/:repo_slug" :paramsDesc="['Workspace', 'Repository']" radar="1" rssbud="1" />
 
 ## Bitmovin
 
 ### Blog
 
 <RouteEn author="elxy" example="/bitmovin/blog" path="/bitmovin/blog"/>
+
+## CNCF
+
+### Category
+
+<RouteEn author="Fatpandac" example="/cncf" path="/cncf/:cate?" radar="1" rssbud="1" :paramsDesc="['blog by default']">
+
+| Blog | News | Announcements | Reports |
+|------|------|---------------|---------|
+| blog | news | announcements | reports |
+
+</RouteEn>
 
 ## Codeforces
 
@@ -99,6 +105,12 @@ Category
 ### Latest
 
 <RouteEn author="nczitzk" example="/distill" path="/distill"/>
+
+## gihyo.jp
+
+### Series
+
+<Route author="masakichi" example="/gihyo/list/group/Ubuntu-Weekly-Recipe" path="/gihyo/list/group/:id" :paramsDesc="['Series']"/>
 
 ## GitHub
 
@@ -119,29 +131,29 @@ GitHub provides some official RSS feeds:
 
 ### Trending
 
-<RouteEn author="DIYgod" path="/github/trending/:since/:language/:spoken_language?" example="/github/trending/daily/javascript/en" :paramsDesc="['time frame, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL, possible values are: `daily`, `weekly` or `monthly`', 'the feed language, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL, don\'t filter option is `any`', 'natural language, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL']" radar="1" rssbud="1"/>
+<RouteEn author="DIYgod" path="/github/trending/:since/:language/:spoken_language?" example="/github/trending/daily/javascript/en" :paramsDesc="['time frame, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL, possible values are: `daily`, `weekly` or `monthly`', 'the feed language, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL, don\'t filter option is `any`', 'natural language, available in [Trending page](https://github.com/trending/javascript?since=monthly) \'s URL']" radar="1" rssbud="1" selfhost="1"/>
 
 ### Topics
 
 <RouteEn author="queensferryme" example="/github/topics/framework" path="/github/topics/:name/:qs?" :paramsDesc="['Topic name, which can be found in the URL of the corresponding [Topics Page](https://github.com/topics/framework)', 'Query string, like `l=php&o=desc&s=stars`. Details listed as follows:']" radar="1" rssbud="1">
 
-| Parameter | Description | Values |
-| ---- | ---- | ---- |
-| `l` | Language | For instance `php`, which can be found in the URL of the corresponding [Topics page](https://github.com/topics/framework?l=php) |
-| `o` | Sorting Order | `asc`, `desc` |
-| `s` | Sorting Criteria | `stars`, `forks`, `updated` |
+| Parameter | Description      | Values                                                                                                                          |
+| --------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `l`       | Language         | For instance `php`, which can be found in the URL of the corresponding [Topics page](https://github.com/topics/framework?l=php) |
+| `o`       | Sorting Order    | `asc`, `desc`                                                                                                                   |
+| `s`       | Sorting Criteria | `stars`, `forks`, `updated`                                                                                                     |
 
 For instance, the `/github/topics/framework/l=php&o=desc&s=stars` route will generate the RSS feed corresponding to this [page](https://github.com/topics/framework?l=php&o=desc&s=stars).
 
-</Route>
+</RouteEn>
 
 ### Repo Issues
 
-<RouteEn author="HenryQW AndreyMZ" path="/github/issue/:user/:repo/:state?/:labels?" example="/github/issue/DIYgod/RSSHub/all/bug" :paramsDesc="['GitHub username', 'GitHub repo name', 'the state of the issues. Can be either `open`, `closed`, or `all`. Default: `open`.', 'a list of comma separated label names']" radar="1" rssbud="1"/>
+<RouteEn author="HenryQW AndreyMZ" path="/github/issue/:user/:repo/:state?/:labels?" example="/github/issue/DIYgod/RSSHub/all/RSS%20proposal" :paramsDesc="['GitHub username', 'GitHub repo name', 'the state of the issues. Can be either `open`, `closed`, or `all`. Default: `open`.', 'a list of comma separated label names']" radar="1" rssbud="1"/>
 
 ### Repo Pull Requests
 
-<RouteEn author="hashman TonyRL" example="/github/pull/DIYgod/RSSHub" path="/github/pull/:user/:repo/:state?" :paramsDesc="['User name', 'Repo name', 'the state of pull requests. Can be either `open`, `closed`, or `all`. Default: `open`.']" radar="1" rssbud="1"/>
+<RouteEn author="hashman TonyRL" example="/github/pull/DIYgod/RSSHub" path="/github/pull/:user/:repo/:state?/:labels?" :paramsDesc="['User name', 'Repo name', 'the state of pull requests. Can be either `open`, `closed`, or `all`. Default: `open`.', 'a list of comma separated label names']" radar="1" rssbud="1"/>
 
 ### User Followers
 
@@ -174,7 +186,7 @@ For instance, the `/github/topics/framework/l=php&o=desc&s=stars` route will gen
 
 ### Search Result
 
-<RouteEn author="LogicJake" example="/github/search/RSSHub/bestmatch/desc" path="/github/search/:query/:sort?/:order?" :paramsDesc="['search keyword', 'Sort options (default to bestmatch)','Sort order, desc and asc (desc descending by default)']"/>
+<RouteEn author="LogicJake" example="/github/search/RSSHub/bestmatch/desc" path="/github/search/:query/:sort?/:order?" :paramsDesc="['search keyword', 'Sort options (default to bestmatch)','Sort order, desc and asc (desc descending by default)']">
 
 | Sort options     | sort      |
 | ---------------- | --------- |
@@ -182,6 +194,8 @@ For instance, the `/github/topics/framework/l=php&o=desc&s=stars` route will gen
 | Most stars       | stars     |
 | Most forks       | forks     |
 | Recently updated | updated   |
+
+</RouteEn>
 
 ### User Starred Repositories
 
@@ -191,9 +205,9 @@ For instance, the `/github/topics/framework/l=php&o=desc&s=stars` route will gen
 
 <RouteEn author="zoenglinghou" example="/github/contributors/DIYgod/RSSHub" path="/github/contributors/:user/:repo/:order?/:anon?" :paramsDesc="['User name','Repo name','Sort order by commit numbers, desc and asc (descending by default)','Show anonymous users. Defaults to no, use any values for yes.']" radar="1" rssbud="1"/>
 
-### Issues / Pull Requests comments
+### Issue / Pull Request comments
 
-<RouteEn author="TonyRL" example="/github/comments/DIYgod/RSSHub/issues/8116" path="/github/comments/:user/:repo/:type/:number" :paramsDesc="['User / Org name', 'Repo name', 'Type, `issues` or `pull`', 'Number']"/>
+<RouteEn author="TonyRL" example="/github/comments/DIYgod/RSSHub/8116" path="/github/comments/:user/:repo/:number" :paramsDesc="['User / Org name', 'Repo name', 'Issue or pull number']"/>
 
 ## GitLab
 
@@ -229,13 +243,15 @@ For instance, the `/github/topics/framework/l=php&o=desc&s=stars` route will gen
 
 ### Section
 
-<RouteEn author="cf020031308 nczitzk" example="/hackernews" path="/hackernews/:section?/:type?/:user?" :paramsDesc="['Section, see below, `index` by default', 'Link, see below, `sources` by default', 'User, only valid for section `threads` and `submitted`']">
+<RouteEn author="cf020031308 nczitzk" example="/hackernews" path="/hackernews/:section?/:type?/:user?" :paramsDesc="['Section, see below, `index` by default', 'Link, see below, `sources` by default', 'User, only valid for section `threads` and `submitted`. When `over` section is used, `User` means the threshold points for post']">
 
 Section
 
-| homepage                              | new                                           | past                                        | comments                                                | ask                                     | show                                      | jobs                                      | best                                      | threads                                                 | submitted                                                   |
-| ------------------------------------- | --------------------------------------------- | ------------------------------------------- | ------------------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
-| [index](https://news.ycombinator.com) | [newest](https://news.ycombinator.com/newest) | [front](https://news.ycombinator.com/front) | [newcomments](https://news.ycombinator.com/newcomments) | [ask](https://news.ycombinator.com/ask) | [show](https://news.ycombinator.com/show) | [jobs](https://news.ycombinator.com/jobs) | [best](https://news.ycombinator.com/best) | [threads](https://news.ycombinator.com/threads?id=dang) | [submitted](https://news.ycombinator.com/submitted?id=dang) |
+| homepage                              | new                                           | past                                        | comments                                                | ask                                     | show                                      | jobs                                      | best                                      | threads                                                 | submitted                                                   |over                            |
+| ------------------------------------- | --------------------------------------------- | ------------------------------------------- | ------------------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |----------------------------------------------------------- |
+| [index](https://news.ycombinator.com) | [newest](https://news.ycombinator.com/newest) | [front](https://news.ycombinator.com/front) | [newcomments](https://news.ycombinator.com/newcomments) | [ask](https://news.ycombinator.com/ask) | [show](https://news.ycombinator.com/show) | [jobs](https://news.ycombinator.com/jobs) | [best](https://news.ycombinator.com/best) | [threads](https://news.ycombinator.com/threads?id=dang) | [submitted](https://news.ycombinator.com/submitted?id=dang) | [over](https://news.ycombinator.com/over?points=100) |
+
+> Section `Over` only shows the submissions over a fixed threshold from last few days
 
 Items link to
 
@@ -291,6 +307,14 @@ Subscribe to the updates (threads and submission) from a paritcular Hacker News 
 
 <RouteEn author="NathanDai" example="/leetcode/submission/us/nathandai" path="/leetcode/submission/:country/:user" :paramsDesc="['country, Chines(cn) and US(us)', 'Username, available at the URL of the LeetCode user homepage']"/>
 
+### Daily Question
+
+<RouteEn author="NavePnow" example="/leetcode/dailyquestion/en" path="/leetcode/dailyquestion/:lang" :paramsDesc="['site, Chines(cn) and Engligh(en)']"/>
+
+### Daily Question Solution
+
+<RouteEn author="woaidouya123" example="/leetcode/dailyquestion/solution/en" path="/leetcode/dailyquestion/solution/:lang" :paramsDesc="['site, Chines(cn) and Engligh(en)']"/>
+
 ## Linux Patchwork
 
 ### Patch Comments
@@ -318,6 +342,17 @@ Subscribe to the updates (threads and submission) from a paritcular Hacker News 
 | Slackware        | `Slackware`        |
 | SUSE             | `SUSE`             |
 | Ubuntu           | `Ubuntu`           |
+
+</RouteEn>
+
+## MySQL
+
+### Release Notes
+
+<RouteEn author="nczitzk" example="/mysql/release/8.0" path="/mysql/release/:version?" :paramsDesc="['Version, see below, 8.0 by default']">
+
+| 8.0 | 5.7 | 5.6 |
+| --- | --- | --- |
 
 </RouteEn>
 
@@ -375,3 +410,13 @@ Subscribe to the updates (threads and submission) from a paritcular Hacker News 
 | featured | trending        | trending_m       | trending_d     | popular      | new            |
 
 </RouteEn>
+
+## zooTeam
+
+### blog
+
+<RouteEn author="Pulset" example="/zooTeam/blog" path="/zooTeam/blog" radar="1" rssbud="1"/>
+
+### weekly
+
+<RouteEn author="Pulset" example="/zooTeam/weekly" path="/zooTeam/weekly" radar="1" rssbud="1"/>
