@@ -1,3 +1,0 @@
-{{ if itemPicUrl }}
-<img src="{{ itemPicUrl }}">
-{{ /if }}
