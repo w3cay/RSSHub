@@ -8,8 +8,8 @@ const maintainerURL = 'https://raw.githubusercontent.com/DIYgod/RSSHub/gh-pages/
 const successTag = 'Bug Ping: Pinged';
 const parseFailTag = 'Bug Ping: Parsing Failed';
 const failTag = 'Bug Ping: Not Found';
-const v1route = 'Route: v1';
-const v2route = 'Route: v2';
+const deprecatedRoute = 'Route: deprecated';
+const route = 'Route';
 
 // DnD (do-not-disturb) usernames, add yours here to avoid being notified
 const dndUsernames = new Set([]);
@@ -31,7 +31,7 @@ async function parseBodyRoutes(body, core) {
     }
 
     if (routes) {
-        routes = routes.split(/\r?\n/).filter((n) => n);
+        routes = routes.split(/\r?\n/).filter(Boolean);
         const dedup = [...new Set(routes)];
         if (dedup.length !== routes.length) {
             core.warning('Duplication detected.');
@@ -40,10 +40,13 @@ async function parseBodyRoutes(body, core) {
         return dedup;
     }
 
-    throw 'unable to parse the issue body: route does not exist';
+    throw new Error('unable to parse the issue body: route does not exist');
 }
 
 async function getMaintainersByRoutes(routes, core) {
+    // TODO: change me when https://github.com/actions/github-script is run on node20
+    // const response = await fetch(maintainerURL);
+    // const maintainers = await response.json();
     const maintainers = await got(maintainerURL).json();
 
     return routes.map((e) => {
@@ -64,8 +67,31 @@ module.exports = async ({ github, context, core }) => {
         repo: context.repo.repo,
     };
 
-    const routes = await parseBodyRoutes(body, core).catch((e) => {
-        core.warning(e);
+    const addLabels = (labels) =>
+        github.rest.issues
+            .addLabels({
+                ...issue_facts,
+                labels,
+            })
+            .catch((error) => {
+                core.warning(error);
+            });
+    const updateIssueState = (state) =>
+        github.rest.issues
+            .update({
+                ...issue_facts,
+                state,
+            })
+            .catch((error) => {
+                core.warning(error);
+            });
+
+    if (context.payload.issue.state === 'closed') {
+        await updateIssueState('open');
+    }
+
+    const routes = await parseBodyRoutes(body, core).catch((error) => {
+        core.warning(error);
     });
 
     if (routes === null) {
@@ -73,14 +99,7 @@ module.exports = async ({ github, context, core }) => {
     }
 
     if (routes === undefined) {
-        await github.rest.issues
-            .addLabels({
-                ...issue_facts,
-                labels: [parseFailTag],
-            })
-            .catch((e) => {
-                core.warning(e);
-            });
+        await addLabels([parseFailTag]);
         return;
     }
 
@@ -91,8 +110,7 @@ module.exports = async ({ github, context, core }) => {
     let failedCount = 0;
     let comments = '##### Searching for maintainers: \n\n';
 
-    for (let i = 0; i < routes.length; i++) {
-        const route = routes[i];
+    for (const [i, route] of routes.entries()) {
         const main = maintainers[i];
         if (main === undefined) {
             comments += `- \`${route}\`: **Route not found**\n`;
@@ -129,22 +147,15 @@ module.exports = async ({ github, context, core }) => {
     }
 
     if (emptyCount > 0) {
-        labels.push(v1route);
+        labels.push(deprecatedRoute);
     }
 
     if (successCount > 0) {
-        labels.push(v2route);
+        labels.push(route);
     }
 
     // Write labels (status, affected route count)
-    await github.rest.issues
-        .addLabels({
-            ...issue_facts,
-            labels,
-        })
-        .catch((e) => {
-            core.warning(e);
-        });
+    await addLabels(labels);
 
     // Reply to the issue and notify the maintainers (if any)
     await github.rest.issues
@@ -155,22 +166,15 @@ module.exports = async ({ github, context, core }) => {
 
 > To maintainers: if you are not willing to be disturbed, list your username in \`scripts/workflow/test-issue/call-maintainer.js\`. In this way, your username will be wrapped in an inline code block when tagged so you will not be notified.
 
-如果有任何路由无法匹配，issue 将会被自动关闭。如果 issue 和路由无关，请使用 \`NOROUTE\` 关键词，或者留下评论。我们会重新审核。
-If there is any route not found, the issue will be closed automatically. Please use \`NOROUTE\` for a route-irrelevant issue or leave a comment if it is a mistake.
+如果所有路由都无法匹配，issue 将会被自动关闭。如果 issue 和路由无关，请使用 \`NOROUTE\` 关键词，或者留下评论。我们会重新审核。
+If all routes can not be found, the issue will be closed automatically. Please use \`NOROUTE\` for a route-irrelevant issue or leave a comment if it is a mistake.
 `,
         })
-        .catch((e) => {
-            core.warning(e);
+        .catch((error) => {
+            core.warning(error);
         });
 
-    if (failedCount > 0) {
-        await github.rest.issues
-            .update({
-                ...issue_facts,
-                state: 'closed',
-            })
-            .catch((e) => {
-                core.warning(e);
-            });
+    if (failedCount && emptyCount === 0 && successCount === 0) {
+        await updateIssueState('closed');
     }
 };
