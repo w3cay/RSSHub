@@ -193,7 +193,7 @@ async function handler(ctx) {
     }
 
     return weiboUtils.sinaimgTvax({
-        title: `${name}的微博`,
+        title: name,
         link: `https://weibo.com/${uid}/`,
         description,
         image: profileImageUrl,

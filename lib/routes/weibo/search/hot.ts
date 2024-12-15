@@ -74,6 +74,8 @@ async function handler(ctx) {
             return {
                 title,
                 link,
+                pic: item.pic,
+                icon: item.icon || '',
                 plink,
             };
         });
@@ -95,16 +97,35 @@ async function handler(ctx) {
             return {
                 title,
                 description,
+                pic: item.pic,
+                icon: item.icon || '',
                 link,
             };
         });
     }
 
+    let listHtml = '';
+    if (resultItems && resultItems) {for (const hotItem of resultItems) {
+            listHtml = `${listHtml}
+            <li style="list-style: none;">
+                <image width="24"  style="vertical-align: bottom; position:relative; top: -3px" src="${hotItem.pic}"/>
+                <a href="${hotItem.link}">${hotItem.title}</a>
+                ${hotItem.icon && `<image  style="vertical-align: bottom;position:relative; top: -3px" width="24" src="${hotItem.icon}"/>`}
+            </li>`;
+        }}
+
     return {
         title: '微博热搜榜',
         link: 'https://s.weibo.com/top/summary?cate=realtimehot',
         description: '实时热点，每分钟更新一次',
-        item: resultItems,
+        item: [
+            {
+                title: `微博热搜`,
+                description: listHtml,
+                pubDate: new Date(),
+                link: 'https://s.weibo.com/top/summary?cate=realtimehot',
+            },
+        ],
     };
 }
 
