@@ -30,7 +30,7 @@ export const route: Route = {
 async function handler(ctx) {
     const {
         questionId,
-        sortBy = 'default', // default,created,updated
+        sortBy = 'updated', // default,created,updated
     } = ctx.req.param();
 
     // second: get real data from zhihu
